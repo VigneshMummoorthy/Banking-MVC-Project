@@ -22,4 +22,4 @@ This is a simple ASP.NET MVC mini project demonstrating **User and Employee Regi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/MVC-Banking-Registration.git
+   git clone https://github.com/VigneshMummoorthy/Banking-MVC-Project.git
