@@ -1,0 +1,363 @@
+﻿@{
+    ViewBag.Title = "New Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var employees = ViewBag.Employees as List<iStart.Models.Employee>;
+    var today = DateTime.Now;
+    var minDate = today.AddYears(-100);
+}
+@model iStart.Models.Employee
+<style>
+    .is-invalid {
+        border-color: #dc3545;
+    }
+</style>
+<style>
+    .icon-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    }
+
+    .icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #000;
+    font-size: 16px;
+    }
+
+    .icon-btn:hover {
+    color: #007bff;
+    }
+
+    .edit-btn {
+    margin-right: auto;
+    }
+
+    .delete-btn {
+    margin-left: auto;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <strong>
+                @{
+                    string email = ViewBag.Email as string;
+                    string password = ViewBag.Password as string;
+                    string name = ViewBag.Name as string;
+
+                    if (email == "admin@gmail.com" && password == "admin@123")
+                    {
+                        @:Admin
+                    }
+                    else
+                    {
+                        @name
+                    }
+                }
+            </strong>
+        </div>
+        <div>
+            <a href="/Login/Login" class="btn btn-outline-danger btn-sm">Login</a>
+        </div>
+    </div>
+
+
+    <h2>New Employee</h2>
+
+    <form asp-action="SaveEmployee" method="post">
+        <div class="row g-3 mb-4">
+            <!-- Column 1 -->
+            <div class="col-md-3">
+                <div class="d-flex align-items-center mb-3">
+                    <label for="branchName" class="form-label me-2" style="min-width: 130px;">Branch Name <span class="text-danger">*</span></label>
+                    <input type="text" id="branchName" name="BranchName" class="form-control" placeholder="Enter Branch Name" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="department" class="form-label me-2" style="min-width: 130px;">Department <span class="text-danger">*</span></label>
+                    <input type="text" id="department" name="DepartmentName" class="form-control" placeholder="Enter Department" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="area" class="form-label me-2" style="min-width: 130px;">Area <span class="text-danger">*</span></label>
+                    <input type="text" id="area" name="Area" class="form-control" placeholder="Enter Area" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="email" class="form-label me-2" style="min-width: 130px;">Email <span class="text-danger">*</span></label>
+                    <input type="email" id="email" name="Email" class="form-control" placeholder="Enter Email" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="qualification" class="form-label me-2" style="min-width: 130px;">Qualification</label>
+                    <input type="text" id="qualification" name="Qualification" class="form-control" autocomplete="off" placeholder="Enter Qualification" />
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-3">
+                <div class="d-flex align-items-center mb-3">
+                    <label for="employeeName" class="form-label me-2" style="min-width: 130px;">
+                        Employee Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           id="employeeName"
+                           name="EmployeeName"
+                           class="form-control"
+                           autocomplete="off"
+                           placeholder="Enter Employee Name"
+                           pattern="[A-Za-z\s]+"
+                           title="Only alphabets are allowed" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="employeeCode" class="form-label me-2" style="min-width: 130px;">Employee Code <span class="text-danger">*</span></label>
+                    <input type="text" id="employeeCode" name="EmployeeCode" class="form-control" autocomplete="off" maxlength="10" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="city" class="form-label me-2" style="min-width: 130px;">City</label>
+                    <input type="text" id="city" name="City" class="form-control" autocomplete="off" placeholder="Enter City" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="gender" class="form-label me-2" style="min-width: 130px;">Gender <span class="text-danger">*</span></label>
+                    <select id="gender" name="Gender" class="form-select">
+                        <option selected disabled>Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="designation" class="form-label me-2" style="min-width: 130px;">Designation</label>
+                    <input type="text" id="designation" name="Designation" class="form-control" autocomplete="off" placeholder="Enter Designation" />
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-md-3">
+                <div class="d-flex align-items-center mb-3">
+                    <label for="mobileNo1" class="form-label me-2" style="min-width: 130px;">Mobile No1 <span class="text-danger">*</span></label>
+                    <input type="tel" id="mobileNo1" name="MobileNo1" class="form-control" placeholder="Enter Mobile No1"
+                           maxlength="10" pattern="\d{10}" title="Enter a 10-digit mobile number" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="dob" class="form-label me-2" style="min-width: 130px;">Date of Birth <span class="text-danger">*</span></label>
+                    <input type="date" id="dob" name="DOB" class="form-control" min="@minDate.ToString("yyyy-MM-dd")"
+                           max="@today.ToString("yyyy-MM-dd")" autocomplete="off" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="state" class="form-label me-2" style="min-width: 130px;">State</label>
+                    <input type="text" id="state" name="State" class="form-control" autocomplete="off" placeholder="Enter State" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="username" class="form-label me-2" style="min-width: 130px;">Username</label>
+                    <input type="text" id="username" name="Username" class="form-control" autocomplete="off" placeholder="Enter Username" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="role" class="form-label me-2" style="min-width: 130px;">Role <span class="text-danger">*</span></label>
+                    <input type="text" id="role" name="Role" class="form-control" autocomplete="off" placeholder="Enter Role" />
+                </div>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="col-md-3">
+                <div class="d-flex align-items-center mb-3">
+                    <label for="mobileNo2" class="form-label me-2" style="min-width: 130px;">Mobile No2</label>
+                    <input type="tel" id="mobileNo2" name="MobileNo2" class="form-control" placeholder="Enter Mobile No2" autocomplete="off"
+                           maxlength="10" pattern="\d{10}" title="Enter a 10-digit mobile number" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="dateOfJoin" class="form-label me-2" style="min-width: 130px;">Date of Join <span class="text-danger">*</span></label>
+                    <input type="date" id="dateOfJoin" name="DateOfJoin" min="@minDate.ToString("yyyy-MM-dd")" autocomplete="off"
+                           max="@today.ToString("yyyy-MM-dd")" class="form-control" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="pincode" class="form-label me-2" style="min-width: 130px;">Pincode</label>
+                    <input type="text" id="pincode" name="Pincode" class="form-control" autocomplete="off" placeholder="Enter Pincode" />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="password" class="form-label me-2" style="min-width: 130px;">Password<span class="text-danger">*</span></label>
+                    <input type="password" id="password" name="Password" class="form-control" autocomplete="off"
+                           placeholder="Enter Password" minlength="6" required />
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label for="status" class="form-label me-2" style="min-width: 130px;">Status <span class="text-danger">*</span></label>
+                    <select id="status" name="Status" class="form-select">
+                        <option selected disabled>Select Status</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="presentAddress" class="form-label">Present Address <span class="text-danger">*</span></label>
+                <textarea name="PresentAddress" id="presentAddress" class="form-control" rows="3" autocomplete="off" required placeholder="Enter Present Address"></textarea>
+            </div>
+
+            <div class="col-md-4 d-flex align-items-center">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" id="sameAsPresent" onchange="copyAddress()" />
+                    <label class="form-check-label" for="sameAsPresent">Same as Present (Permanent Address)</label>
+                </div>
+            </div>
+
+            <div class="col-md-4" style="margin-left: -20px;">
+                <!-- Move left -->
+                <label for="PermanentAddress" class="form-label">Permanent Address <span class="text-danger">*</span></label>
+                <div class="d-flex align-items-start">
+                    <textarea name="PermanentAddress" id="PermanentAddress" class="form-control me-2" rows="3" autocomplete="off" required placeholder="Enter Permanent Address"></textarea>
+                    <div class="d-flex flex-column gap-2">
+                        <button type="submit" class="btn btn-dark btn-sm px-4 py-2">Save</button>
+                        <button type="reset" class="btn btn-secondary btn-sm px-4 py-2">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container mt-4">
+    <h3>List of Employees</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Branch Name</th>
+                <th>Employee Name</th>
+                <th>Mobile No</th>
+                <th>Department</th>
+                <th>Employee Code</th>
+                <th>Date of Join</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Permanent Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (employees != null && employees.Count > 0)
+            {
+                @foreach (var emp in employees)
+                {
+                    <tr>
+                        <td>@emp.BranchName</td>
+                        <td>@emp.EmployeeName</td>
+                        <td>@emp.MobileNo1</td>
+                        <td>@emp.DepartmentName</td>
+                        <td>@emp.EmployeeCode</td>
+                        <td>@emp.DateOfJoin</td>
+                        <td>@emp.Email</td>
+                        <td>@emp.Gender</td>
+                        <td>@emp.Role</td>
+                        <td>@emp.Status</td>
+                        <td>@emp.PermanentAddress</td>
+                        <td class="icon-cell">
+                            @{
+                                string names = ViewBag.Name as string;
+                                string emails = ViewBag.Email as string;
+                                string passwords = ViewBag.Password as string;
+
+                                if (names == "Admin")
+                                {
+                                    <button class="icon-btn edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="icon-btn delete-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No users found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const table = document.querySelector("tbody");
+
+        table.addEventListener("click", function (e) {
+            if (e.target.closest(".edit-btn")) {
+                const row = e.target.closest("tr");
+                const editBtn = row.querySelector(".edit-btn");
+                const isEditing = editBtn.dataset.editing === "true";
+
+                if (!isEditing) {
+                    Array.from(row.children).forEach((cell, index) => {
+                        if (index < 10) {
+                            const value = cell.innerText;
+                            cell.innerHTML = `<input type="text" value="${value}" style="width:100%">`;
+                        }
+                    });
+
+                    editBtn.innerHTML = '<i class="fas fa-save"></i>';
+                    editBtn.dataset.editing = "true";
+                } else {
+                    Array.from(row.children).forEach((cell, index) => {
+                        if (index < 10) {
+                            const input = cell.querySelector("input");
+                            if (input) {
+                                cell.innerText = input.value;
+                            }
+                        }
+                    });
+
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                    editBtn.dataset.editing = "false";
+                }
+            }
+        });
+    });
+</script>
+<script>
+        document.getElementById('sameAsPresent').addEventListener('change', function () {
+        const permanentAddress = document.getElementById('PermanentAddress');
+        if (this.checked) {
+            permanentAddress.value = document.getElementById('presentAddress').value;
+            permanentAddress.readOnly = true;
+        } else {
+            permanentAddress.readOnly = false;
+        }
+    });
+
+    document.getElementById('presentAddress').addEventListener('input', function () {
+        if (document.getElementById('sameAsPresent').checked) {
+            document.getElementById('PermanentAddress').value = this.value;
+        }
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const branchInput = document.getElementById("branchName");
+
+        branchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Tab" && !branchInput.value.trim()) {
+                e.preventDefault();
+                branchInput.focus();
+                branchInput.classList.add("is-invalid");
+                return false;
+            }
+        });
+
+        branchInput.addEventListener("input", function () {
+            branchInput.classList.remove("is-invalid");
+        });
+    });
+</script>
+

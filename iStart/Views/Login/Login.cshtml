@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var passwordPattern = @"^(?=.*[!@#$%^&*(),.?\"":{}|<>]).+$";
+}
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="container mt-5" style="max-width: 400px;">
+    <h2 class="sign-in-text">Sign in with</h2>
+    <form asp-controller="Login" asp-action="Login" method="post" id="loginForm" autocomplete="off">
+
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required autocomplete="off" />
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="Password"
+                   minlength="6"
+                   required
+                   autocomplete="new-password"
+                   pattern='@Html.Raw(passwordPattern)'
+                   title="Password must contain at least one special character." />
+            @Html.ValidationMessage("password", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="remember-forgot mb-3">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="rememberMe" id="rememberMe" />
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="@Url.Action("ForgotPassword", "Account")">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login button">Login</button>
+    </form>
+
+    <div class="account">
+        <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Register</a></p>
+    </div>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const email = document.getElementById('email').value;
+
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+    });
+
+    window.onload = function () {
+      const rememberedEmail = localStorage.getItem('rememberedEmail');
+      if (rememberedEmail) {
+        document.getElementById('email').value = rememberedEmail;
+        document.getElementById('rememberMe').checked = true;
+      }
+    }
+</script>
